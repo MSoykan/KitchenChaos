@@ -8,11 +8,41 @@ public class Player : MonoBehaviour {
 
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private GameInput gameInput;
+    [SerializeField] private LayerMask counterLayerMask;
 
     private bool isWalking;
+    private Vector3 lastInteractDir;
 
     private void Update() {
+        HandleMovement();
+        HandleInteractions();
+    }
 
+    public bool IsWalking() {
+        return isWalking;
+    }
+
+    private void HandleInteractions() {
+        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+
+        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
+
+        if(moveDir != Vector3.zero) {
+            lastInteractDir = moveDir;
+        }
+        float interactDistance = 2f;
+        if(Physics.Raycast(transform.position, lastInteractDir, out RaycastHit rayCastHit , interactDistance, counterLayerMask)) {
+            if(rayCastHit.transform.TryGetComponent(out ClearCounter clearCounter)) {
+                // Has ClearCounter 
+                clearCounter.Interact();
+            }
+
+            if(rayCastHit.transform.GetComponent<ClearCounter>() != null) { }
+        }// could've written 2f directly instead interact dsitance
+                                                                        // -> these hard coding number is called magic numbers.DONT USE MAGIC NUMBERS
+    }
+
+    private void HandleMovement() {
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
 
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
@@ -40,7 +70,7 @@ public class Player : MonoBehaviour {
                 Vector3 moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
                 canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirZ, moveDistance);
 
-                if(canMove) {
+                if (canMove) {
                     //Can move only on the Z
                     moveDir = moveDirZ;
                 }
@@ -59,9 +89,5 @@ public class Player : MonoBehaviour {
         float rotateSpeed = 10f;
         transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
 
-    }
-
-    public bool IsWalking() {
-        return isWalking;
     }
 }

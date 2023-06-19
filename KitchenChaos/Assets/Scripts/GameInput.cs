@@ -17,7 +17,6 @@ public class GameInput : MonoBehaviour
 
         inputVector = inputVector.normalized;
 
-        Debug.Log(inputVector);
 
         return inputVector;
     }
