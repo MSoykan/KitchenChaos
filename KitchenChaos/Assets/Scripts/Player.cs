@@ -13,7 +13,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
     public event EventHandler<OnSelectedCounterChangeEventArgs> OnSelectedCounterChange;
 
     public class OnSelectedCounterChangeEventArgs : EventArgs {
-        public ClearCounter selectedCounter;
+        public BaseCounter selectedCounter;
     }
 
     [SerializeField] private float moveSpeed = 7f;
@@ -24,7 +24,8 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
 
     private bool isWalking;
     private Vector3 lastInteractDir;
-    private ClearCounter selectedCounter;
+    private Vector3 lastMoveDir;
+    private BaseCounter selectedCounter;
     private KitchenObject kitchenObject;
 
     private void Awake() {
@@ -62,11 +63,11 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
         }
         float interactDistance = 2f;
         if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit rayCastHit, interactDistance, counterLayerMask)) {
-            if (rayCastHit.transform.TryGetComponent(out ClearCounter clearCounter)) {
+            if (rayCastHit.transform.TryGetComponent(out BaseCounter baseCounter)) {
                 // Has ClearCounter 
                 //clearCounter.Interact();
-                if (clearCounter != selectedCounter) {
-                    SetSelectedCounter(clearCounter);
+                if (baseCounter != selectedCounter) {
+                    SetSelectedCounter(baseCounter);
                 }
             }
             else {
@@ -80,8 +81,10 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
 
     private void HandleMovement() {
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+        if (inputVector == Vector2.zero) return;
 
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
+        Vector3 firstDir= new Vector3(inputVector.x, 0f, inputVector.y);
 
 
         float moveDistance = moveSpeed * Time.deltaTime;
@@ -123,11 +126,12 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
 
         isWalking = moveDir != Vector3.zero;
         float rotateSpeed = 10f;
-        transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
+        if (moveDir == Vector3.zero) return;
+        transform.forward = Vector3.Slerp(transform.forward, firstDir, Time.deltaTime * rotateSpeed);
 
     }
 
-    private void SetSelectedCounter(ClearCounter selectedCounter) {
+    private void SetSelectedCounter(BaseCounter selectedCounter) {
         this.selectedCounter = selectedCounter;
 
         OnSelectedCounterChange?.Invoke(this, new OnSelectedCounterChangeEventArgs {

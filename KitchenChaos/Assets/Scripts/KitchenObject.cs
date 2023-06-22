@@ -13,7 +13,7 @@ public class KitchenObject : MonoBehaviour {
     }
 
 
-    public void SetKitchenObjectParent(IKitchenObjectParent kitchenObjectParent) {
+    public void SetKitchenObjectParent(IKitchenObjectParent kitchenObjectParent) { // 
         if(this.kitchenObjectParent != null) {
             this.kitchenObjectParent.ClearKitchenObject();
         }
@@ -21,7 +21,7 @@ public class KitchenObject : MonoBehaviour {
 
         this.kitchenObjectParent = kitchenObjectParent;
         if(kitchenObjectParent.HasKitchenObject()) {
-            Debug.LogError("Counter already has a kitchen object");
+            Debug.LogError("IKitchenObjectParent already has a kitchen object");
         }
         kitchenObjectParent.SetKitchenObject(this);
 
