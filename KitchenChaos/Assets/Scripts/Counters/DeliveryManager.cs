@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -5,7 +6,10 @@ using UnityEngine;
 
 public class DeliveryManager : MonoBehaviour {
 
-    public static DeliveryManager instance { get; private set; }
+
+    public event EventHandler OnRecipeSpawned;
+    public event EventHandler OnRecipeDelivered;
+    public static DeliveryManager Instance { get; private set; }
 
 
     [SerializeField] private RecipeListSO recipeListSO;
@@ -15,7 +19,7 @@ public class DeliveryManager : MonoBehaviour {
     private float spawnRecipeTimerMax = 4f;
     private int waitingRecipesMax = 4;
     private void Awake() {
-        instance = this;
+        Instance = this;
         waitingRecipeSOList = new List<RecipeSO>();
     }
 
@@ -25,9 +29,11 @@ public class DeliveryManager : MonoBehaviour {
             spawnRecipeTimer = spawnRecipeTimerMax;
 
             if (waitingRecipeSOList.Count < waitingRecipesMax) {
-                RecipeSO waitingRecipeSO = recipeListSO.recipeSOList[Random.Range(0, recipeListSO.recipeSOList.Count)];
+                RecipeSO waitingRecipeSO = recipeListSO.recipeSOList[UnityEngine.Random.Range(0, recipeListSO.recipeSOList.Count)];
                 Debug.Log(waitingRecipeSO);
                 waitingRecipeSOList.Add(waitingRecipeSO);
+
+                OnRecipeSpawned?.Invoke(this, EventArgs.Empty);
             }
         }
     }
@@ -57,13 +63,19 @@ public class DeliveryManager : MonoBehaviour {
                 }
                 if (plateContentsMatchesRecipe) {
                     // Player delivered correct recipe!
-                    Debug.Log("Player delivered correct recipe.");
+
                     waitingRecipeSOList.RemoveAt(i);
+
+                    OnRecipeDelivered?.Invoke(this, EventArgs.Empty);
                     return;
                 }
             }
         }
         //No matches found!
         //Player did not found a correct recipe.
+    }
+
+    public List <RecipeSO> GetWaitingRecipeSOList() {
+        return waitingRecipeSOList;
     }
 }

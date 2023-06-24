@@ -11,5 +11,4 @@ public class PlateIconSingleUI : MonoBehaviour {
         image.sprite = kitchenObjectSO.sprite;
     }
 
-
 }

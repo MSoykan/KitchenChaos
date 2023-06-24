@@ -20,7 +20,7 @@ public class PlateIconsUI : MonoBehaviour {
     }
 
     private void UpdateVisual() {
-        foreach(Transform child in transform) {
+        foreach(Transform child in transform) {//In case we take out ingredients in the future
             if (child == iconTemplate) continue;
             Destroy(child.gameObject);
         }
