@@ -10,6 +10,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
 
     public static Player Instance { get; private set; }
 
+    public event EventHandler OnTakeSomething;
     public event EventHandler<OnSelectedCounterChangeEventArgs> OnSelectedCounterChange;
 
     public class OnSelectedCounterChangeEventArgs : EventArgs {
@@ -151,6 +152,10 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
 
     public void SetKitchenObject(KitchenObject kitchenObject) {
         this.kitchenObject = kitchenObject;
+
+        if(kitchenObject != null) {
+            OnTakeSomething?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public KitchenObject GetKitchenObject() {
