@@ -15,11 +15,9 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
-{
+public partial class @PlayerInputActions : IInputActionCollection2, IDisposable {
     public InputActionAsset asset { get; }
-    public @PlayerInputActions()
-    {
+    public @PlayerInputActions() {
         asset = InputActionAsset.FromJson(@"{
     ""name"": ""PlayerInputActions"",
     ""maps"": [
@@ -211,57 +209,47 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_InteractAlternate = m_Player.FindAction("InteractAlternate", throwIfNotFound: true);
     }
 
-    public void Dispose()
-    {
+    public void Dispose() {
         UnityEngine.Object.Destroy(asset);
     }
 
-    public InputBinding? bindingMask
-    {
+    public InputBinding? bindingMask {
         get => asset.bindingMask;
         set => asset.bindingMask = value;
     }
 
-    public ReadOnlyArray<InputDevice>? devices
-    {
+    public ReadOnlyArray<InputDevice>? devices {
         get => asset.devices;
         set => asset.devices = value;
     }
 
     public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
 
-    public bool Contains(InputAction action)
-    {
+    public bool Contains(InputAction action) {
         return asset.Contains(action);
     }
 
-    public IEnumerator<InputAction> GetEnumerator()
-    {
+    public IEnumerator<InputAction> GetEnumerator() {
         return asset.GetEnumerator();
     }
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
+    IEnumerator IEnumerable.GetEnumerator() {
         return GetEnumerator();
     }
 
-    public void Enable()
-    {
+    public void Enable() {
         asset.Enable();
     }
 
-    public void Disable()
-    {
+    public void Disable() {
         asset.Disable();
     }
     public IEnumerable<InputBinding> bindings => asset.bindings;
 
-    public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
-    {
+    public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false) {
         return asset.FindAction(actionNameOrId, throwIfNotFound);
     }
-    public int FindBinding(InputBinding bindingMask, out InputAction action)
-    {
+    public int FindBinding(InputBinding bindingMask, out InputAction action) {
         return asset.FindBinding(bindingMask, out action);
     }
 
@@ -271,8 +259,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_InteractAlternate;
-    public struct PlayerActions
-    {
+    public struct PlayerActions {
         private @PlayerInputActions m_Wrapper;
         public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
@@ -283,10 +270,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
         public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
-        public void SetCallbacks(IPlayerActions instance)
-        {
-            if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
-            {
+        public void SetCallbacks(IPlayerActions instance) {
+            if (m_Wrapper.m_PlayerActionsCallbackInterface != null) {
                 @Move.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
@@ -298,8 +283,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @InteractAlternate.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteractAlternate;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
-            if (instance != null)
-            {
+            if (instance != null) {
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
@@ -313,8 +297,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
-    public interface IPlayerActions
-    {
+    public interface IPlayerActions {
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnInteractAlternate(InputAction.CallbackContext context);

@@ -42,12 +42,14 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
     }
 
     private void GameInput_OnInteractAlternateAction(object sender, EventArgs e) {
+        if (!KitchenGameManager.Instance.IsGamePlaying()) { return; }
         if (selectedCounter != null) {
             selectedCounter.InteractAlternate(this);
         }
     }
 
     private void GameInput_OnInteractAction(object sender, System.EventArgs e) {
+        if (!KitchenGameManager.Instance.IsGamePlaying()) { return; }
         if (selectedCounter != null) {
             selectedCounter.Interact(this);
         }
@@ -91,7 +93,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
         if (inputVector == Vector2.zero) return;
 
-        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);    
+        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
 
         float moveDistance = moveSpeed * Time.deltaTime;
@@ -153,7 +155,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
     public void SetKitchenObject(KitchenObject kitchenObject) {
         this.kitchenObject = kitchenObject;
 
-        if(kitchenObject != null) {
+        if (kitchenObject != null) {
             OnTakeSomething?.Invoke(this, EventArgs.Empty);
         }
     }
