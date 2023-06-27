@@ -6,7 +6,11 @@ using UnityEngine;
 public class CuttingCounter : BaseCounter, IHasProgress {
 
 
-    public static event EventHandler OnAnyCut;
+    public static event EventHandler OnAnyCut;// For cutting sounds.
+
+    new public static void ResetStaticData() {
+        OnAnyCut = null;
+    }
 
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
 
@@ -109,4 +113,5 @@ public class CuttingCounter : BaseCounter, IHasProgress {
         }
         return null;
     }
+
 }
