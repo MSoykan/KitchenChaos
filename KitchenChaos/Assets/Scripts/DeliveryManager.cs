@@ -32,7 +32,7 @@ public class DeliveryManager : MonoBehaviour {
         if (spawnRecipeTimer <= 0f) {
             spawnRecipeTimer = spawnRecipeTimerMax;
 
-            if (waitingRecipeSOList.Count < waitingRecipesMax) {
+            if (waitingRecipeSOList.Count < waitingRecipesMax && KitchenGameManager.Instance.IsGamePlaying()) {
                 RecipeSO waitingRecipeSO = recipeListSO.recipeSOList[UnityEngine.Random.Range(0, recipeListSO.recipeSOList.Count)];
                 Debug.Log(waitingRecipeSO);
                 waitingRecipeSOList.Add(waitingRecipeSO);
