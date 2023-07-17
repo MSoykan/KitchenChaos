@@ -2,10 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.Netcode;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IKitchenObjectParent {
+public class Player : NetworkBehaviour, IKitchenObjectParent {
 
 
     public static Player Instance { get; private set; }
@@ -30,10 +31,11 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
     private KitchenObject kitchenObject;
 
     private void Awake() {
-        if (Instance != null) {
-            Debug.LogError("There is more than one player instance");
-        }
+        //if (Instance != null) {
+        //    Debug.LogError("There is more than one player instance");
+        //}
         Instance = this;
+        gameInput = GameInput.instance;
     }
 
     private void Start() {
