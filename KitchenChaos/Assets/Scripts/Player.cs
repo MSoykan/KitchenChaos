@@ -100,7 +100,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent {
         HandleMovementServerRpc(inputVector);
     }
 
-    [ServerRpc(RequireOwnership = false)]
+    [ServerRpc(RequireOwnership = true)]
     private void HandleMovementServerRpc(Vector2 inputVector) {
         if (inputVector == Vector2.zero) return;
 
