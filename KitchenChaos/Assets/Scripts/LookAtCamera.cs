@@ -14,11 +14,9 @@ public class LookAtCamera : MonoBehaviour {
     [SerializeField] private Mode mode;
 
     private Camera mainCamera;
-    private Transform player;
 
     private void Start() {
         mainCamera = Camera.main;
-        player = FindObjectOfType<Player>().transform;
     }
 
     private void LateUpdate() {

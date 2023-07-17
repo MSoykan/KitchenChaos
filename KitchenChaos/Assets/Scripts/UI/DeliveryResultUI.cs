@@ -38,11 +38,11 @@ public class DeliveryResultUI : MonoBehaviour {
     }
 
     private void DeliveryManager_OnDeliverySuccess(object sender, System.EventArgs e) {
-        animator.SetTrigger(POPUP);
+        animator.SetTrigger(POPUP  );
         backgroundImage.color = successColor;
         iconImage.sprite = successSprite;
         messageText.text = "DELIVERY\nSUCCESS";
-        Show();
+        Show(); 
     }
 
     private void Show() {
