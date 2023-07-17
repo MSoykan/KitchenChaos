@@ -15,6 +15,8 @@ public class KitchenGameManager : MonoBehaviour {
     private void Start() {
         GameInput.instance.OnPauseAction += GameInput_OnPauseAction;
         GameInput.instance.OnInteractAction += GameInput_OnInteractAction;
+
+        //DEBUG TRIGGER GAME START AUTOMATICALLY
     }
 
     private void GameInput_OnInteractAction(object sender, EventArgs e) {
@@ -37,8 +39,8 @@ public class KitchenGameManager : MonoBehaviour {
 
     private State state;
     //private float waitingToStartTimer = 1f;
-    private float countDownToStartTimer = 3f;
-    private float gamePlayingTimer = 60f;
+    private float countDownToStartTimer = 1f;
+    private float gamePlayingTimer = 300f;
     private bool isGamePaused = false;
 
     private void Awake() {
