@@ -19,8 +19,8 @@ public class DeliveryManager : NetworkBehaviour {
     [SerializeField] private RecipeListSO recipeListSO;
 
     private List<RecipeSO> waitingRecipeSOList;
-    private float spawnRecipeTimer= 4f;
-    private float spawnRecipeTimerMax = 0f;
+    private float spawnRecipeTimer = 4f;
+    private float spawnRecipeTimerMax = 1f;
     private int waitingRecipesMax = 4;
     private int successfulRecipesAmount;
 
@@ -30,28 +30,35 @@ public class DeliveryManager : NetworkBehaviour {
     }
 
     private void Update() {
+        if (Input.GetKeyDown(KeyCode.P)) {
+            TestServerRpc();
+        }
+
         if (!IsServer) {
             return;
         }
-
-            spawnRecipeTimer -= Time.deltaTime;
+        spawnRecipeTimer -= Time.deltaTime;
         if (spawnRecipeTimer <= 0f) {
             spawnRecipeTimer = spawnRecipeTimerMax;
 
             if (waitingRecipeSOList.Count < waitingRecipesMax && KitchenGameManager.Instance.IsGamePlaying()) {
                 int waitingRecipeSOIndex = UnityEngine.Random.Range(0, recipeListSO.recipeSOList.Count);
-
                 SpawnNewWaitingRecipeClientRpc(waitingRecipeSOIndex);
             }
         }
     }
 
+    [ServerRpc(RequireOwnership =true)]
+    private void TestServerRpc() {
+        Debug.Log("Testing server rpc");
+    }
+
     [ClientRpc]
-    private void SpawnNewWaitingRecipeClientRpc(int  waitingRecipeSOIndex) {
+    private void SpawnNewWaitingRecipeClientRpc(int waitingRecipeSOIndex) {
         RecipeSO waitingRecipeSO = recipeListSO.recipeSOList[waitingRecipeSOIndex];
 
         waitingRecipeSOList.Add(waitingRecipeSO);
-
+        Debug.Log(waitingRecipeSO);
         OnRecipeSpawned?.Invoke(this, EventArgs.Empty);
     }
 
@@ -101,7 +108,7 @@ public class DeliveryManager : NetworkBehaviour {
         OnDeliveryFailed?.Invoke(this, EventArgs.Empty);
     }
 
-    [ServerRpc(RequireOwnership =false)]
+    [ServerRpc(RequireOwnership = false)]
     private void DeliverCorrectRecipeServerRpc(int waitingRecipeSOListIndex) {
         DeliverCorrectRecipeClientRpc(waitingRecipeSOListIndex);
     }
@@ -115,7 +122,7 @@ public class DeliveryManager : NetworkBehaviour {
         OnDeliverySuccess?.Invoke(this, EventArgs.Empty);
     }
 
-    public List <RecipeSO> GetWaitingRecipeSOList() {
+    public List<RecipeSO> GetWaitingRecipeSOList() {
         return waitingRecipeSOList;
     }
 
