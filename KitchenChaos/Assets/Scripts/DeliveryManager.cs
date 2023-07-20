@@ -31,7 +31,7 @@ public class DeliveryManager : NetworkBehaviour {
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.P)) {
-            TestServerRpc();
+            TestRpc();
         }
 
         if (!IsServer) {
@@ -46,6 +46,9 @@ public class DeliveryManager : NetworkBehaviour {
                 SpawnNewWaitingRecipeClientRpc(waitingRecipeSOIndex);
             }
         }
+    }
+    private void TestRpc() {
+        TestServerRpc();
     }
 
     [ServerRpc(RequireOwnership =true)]

@@ -8,8 +8,12 @@ using UnityEngine;
 
 public class Player : NetworkBehaviour, IKitchenObjectParent {
 
+    public static event EventHandler OnAnyPlayerSpawned;
 
-    public static Player Instance { get; private set; }
+    public static void ResetStaticData() {
+        OnAnyPlayerSpawned = null;
+    }
+    public static Player LocalInstance { get; private set; }
 
     public event EventHandler OnTakeSomething;
     public event EventHandler<OnSelectedCounterChangeEventArgs> OnSelectedCounterChange;
@@ -34,7 +38,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent {
         //if (Instance != null) {
         //    Debug.LogError("There is more than one player instance");
         //}
-        Instance = this;
+        LocalInstance = this;
         gameInput = GameInput.instance;
     }
 
@@ -42,6 +46,15 @@ public class Player : NetworkBehaviour, IKitchenObjectParent {
         gameInput.OnInteractAction += GameInput_OnInteractAction;
         gameInput.OnInteractAlternateAction += GameInput_OnInteractAlternateAction;
     }
+
+    public override void OnNetworkSpawn() {
+        if (IsOwner) {
+            LocalInstance = this;
+        }
+
+        OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
+    }
+
 
     private void GameInput_OnInteractAlternateAction(object sender, EventArgs e) {
         if (!KitchenGameManager.Instance.IsGamePlaying()) { return; }
@@ -102,6 +115,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent {
 
     [ServerRpc(RequireOwnership = true)]
     private void HandleMovementServerRpc(Vector2 inputVector) {
+        Debug.Log("OWNERSHIP ALO");
         if (inputVector == Vector2.zero) return;
 
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
