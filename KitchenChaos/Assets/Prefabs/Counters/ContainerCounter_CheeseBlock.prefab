@@ -68,14 +68,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1922778573736763858, guid: aace93c05970e1a47a382dcb827cf75d,
+        type: 3}
+      propertyPath: containerCounter
+      value: 
+      objectReference: {fileID: 8812212462145457330}
+    - target: {fileID: 3485435109041040220, guid: aace93c05970e1a47a382dcb827cf75d,
+        type: 3}
+      propertyPath: baseCounter
+      value: 
+      objectReference: {fileID: 8812212462145457330}
     - target: {fileID: 5240861903320343166, guid: aace93c05970e1a47a382dcb827cf75d,
         type: 3}
       propertyPath: kitchenObjectSO
       value: 
       objectReference: {fileID: 11400000, guid: afeee8ecf5a66434888f8ed7732f678b,
         type: 2}
+    - target: {fileID: 7715205023273355393, guid: aace93c05970e1a47a382dcb827cf75d,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 951099334
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aace93c05970e1a47a382dcb827cf75d, type: 3}
+--- !u!114 &8812212462145457330 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5240861903320343166, guid: aace93c05970e1a47a382dcb827cf75d,
+    type: 3}
+  m_PrefabInstance: {fileID: 3670447619839766220}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c32c3159ad2a1e4392c0288128a9923, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

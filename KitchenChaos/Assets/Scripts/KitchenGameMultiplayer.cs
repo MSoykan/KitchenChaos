@@ -24,10 +24,11 @@ public class KitchenGameMultiplayer : NetworkBehaviour
 
         Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.GetPrefab());
 
+        // Network 
         NetworkObject kitchenObjectNetworkObject = kitchenObjectTransform.GetComponent<NetworkObject>();
-        kitchenObjectNetworkObject.Spawn(true);
+        kitchenObjectNetworkObject.Spawn(true);// This part is broadcasted to all clients
         KitchenObject kitchenObject = kitchenObjectTransform.GetComponent<KitchenObject>();
-
+        //The rest is only ran on server instead clients.So even tho the server can the clients holding KitchenOjbects, the clients themselves cannot.
         kitchenObjectParentNetworkObjectReference.TryGet(out NetworkObject kitchenObjectParentNetworkObject);
         IKitchenObjectParent kitchenObjectParent = kitchenObjectParentNetworkObject.GetComponent<IKitchenObjectParent>();
         kitchenObject.SetKitchenObjectParent(kitchenObjectParent);
