@@ -16,7 +16,8 @@ public class DeliveryCounter : BaseCounter {
                 //If player is carying a plate
 
                 DeliveryManager.Instance.DeliverRecipe(plateKitchenObject);
-                player.GetKitchenObject().DestroySelf();
+
+                KitchenObject.DestroyKitchenObject(player.GetKitchenObject());
             }
         }
     }
