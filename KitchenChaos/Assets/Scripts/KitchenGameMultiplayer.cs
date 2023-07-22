@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class KitchenGameMultiplayer : NetworkBehaviour
-{
-    
+public class KitchenGameMultiplayer : NetworkBehaviour {
+
     public static KitchenGameMultiplayer Instance { get; private set; }
 
 
@@ -17,8 +16,8 @@ public class KitchenGameMultiplayer : NetworkBehaviour
     public void SpawnKitchenObject(KitchenObjectSO kitchenObjectSO, IKitchenObjectParent parent) {
         KitchenObjectServerRpc(GetKitchenObjectSOIndex(kitchenObjectSO), parent.GetNetworkObject());
     }
-    
-    [ServerRpc(RequireOwnership =false)]
+
+    [ServerRpc(RequireOwnership = false)]
     private void KitchenObjectServerRpc(int kitchenObjectSOIndex, NetworkObjectReference kitchenObjectParentNetworkObjectReference) {
         KitchenObjectSO kitchenObjectSO = GetKitchenObjectSOFromIndex(kitchenObjectSOIndex);
 
@@ -34,11 +33,11 @@ public class KitchenGameMultiplayer : NetworkBehaviour
         kitchenObject.SetKitchenObjectParent(kitchenObjectParent);
     }
 
-    private int GetKitchenObjectSOIndex(KitchenObjectSO kitchenObjectSO) {
+    public int GetKitchenObjectSOIndex(KitchenObjectSO kitchenObjectSO) {
         return kitchenObjectListSO.kitchenObjectSOList.IndexOf(kitchenObjectSO);
     }
 
-    private KitchenObjectSO GetKitchenObjectSOFromIndex(int kitchenObjectSOIndex) {
+    public KitchenObjectSO GetKitchenObjectSOFromIndex(int kitchenObjectSOIndex) {
         return kitchenObjectListSO.kitchenObjectSOList[kitchenObjectSOIndex];
     }
 
@@ -46,7 +45,7 @@ public class KitchenGameMultiplayer : NetworkBehaviour
         DestroyKitchenObjectServerRpc(kitchenOjbect.NetworkObject);
     }
 
-    [ServerRpc(RequireOwnership =false)]
+    [ServerRpc(RequireOwnership = false)]
     private void DestroyKitchenObjectServerRpc(NetworkObjectReference kitchenObjectNetworkObjectReference) {
         kitchenObjectNetworkObjectReference.TryGet(out NetworkObject kitchenObjectNetworkObject);
         KitchenObject kitchenObject = kitchenObjectNetworkObject.GetComponent<KitchenObject>();

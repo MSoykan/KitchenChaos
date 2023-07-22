@@ -50,7 +50,6 @@ public class PlatesCounter : BaseCounter {
             // Player is empty handed
             if (platesSpawnedAmount > 0) {
                 // There's at least one plate here
-
                 KitchenObject.SpawnKitchenObject(kitchenObjectSO, player);
 
                 InteractLogicServerRpc();
