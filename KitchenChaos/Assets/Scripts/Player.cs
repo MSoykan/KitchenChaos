@@ -115,7 +115,6 @@ public class Player : NetworkBehaviour, IKitchenObjectParent {
 
     [ServerRpc(RequireOwnership = true)]
     private void HandleMovementServerRpc(Vector2 inputVector) {
-        Debug.Log("OWNERSHIP ALO");
         if (inputVector == Vector2.zero) return;
 
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
