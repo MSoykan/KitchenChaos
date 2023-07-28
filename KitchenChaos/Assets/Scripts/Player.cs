@@ -52,8 +52,17 @@ public class Player : NetworkBehaviour, IKitchenObjectParent {
         }
 
         OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
+
+        if (IsServer) {
+            NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+        }
     }
 
+    private void NetworkManager_OnClientDisconnectCallback(ulong clientId) {
+        if (clientId == OwnerClientId && HasKitchenObject()) {
+            KitchenObject.DestroyKitchenObject(GetKitchenObject());
+        }
+    }
 
     private void GameInput_OnInteractAlternateAction(object sender, EventArgs e) {
         if (!KitchenGameManager.Instance.IsGamePlaying()) { return; }
@@ -129,7 +138,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent {
 
             //Attempt only x movement
             Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
-            canMove = moveDir.x != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight,     playerRadius, moveDirX, moveDistance);
+            canMove = moveDir.x != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirX, moveDistance);
             if (canMove) {
                 //Can move only on the X
                 moveDir = moveDirX;
