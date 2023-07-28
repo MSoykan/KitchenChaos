@@ -2393,6 +2393,7 @@ GameObject:
   m_Component:
   - component: {fileID: 334654630}
   - component: {fileID: 334654629}
+  - component: {fileID: 334654631}
   m_Layer: 0
   m_Name: KitchenGameManager
   m_TagString: Untagged
@@ -2427,6 +2428,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &334654631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 334654628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1992365312
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &338694977
 GameObject:
   m_ObjectHideFlags: 0
@@ -3522,16 +3539,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 430980571}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cf1aea2213516146929c21d92d499c3, type: 3}
+  m_Script: {fileID: 11500000, guid: e2c36f3950f9854439f3e53179f71d4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keyMoveUpText: {fileID: 0}
-  keyMoveDownText: {fileID: 0}
-  keyMoveLeftText: {fileID: 0}
-  keyMoveRightText: {fileID: 0}
-  keyInteractText: {fileID: 0}
-  keyInteractAltText: {fileID: 0}
-  keyPauseText: {fileID: 0}
 --- !u!4 &445217166 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4731861202129177415, guid: 69ae2bfb56b29ea43bed5883eba1b5af,
