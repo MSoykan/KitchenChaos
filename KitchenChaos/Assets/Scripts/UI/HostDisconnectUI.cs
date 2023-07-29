@@ -17,7 +17,6 @@ public class HostDisconnectUI : MonoBehaviour
     }
 
     private void Start() {
-
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
         Hide();
     }

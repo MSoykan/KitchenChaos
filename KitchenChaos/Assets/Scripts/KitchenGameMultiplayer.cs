@@ -12,6 +12,8 @@ public class KitchenGameMultiplayer : NetworkBehaviour {
     [SerializeField] private KitchenObjectListSO kitchenObjectListSO;
     private void Awake() {
         Instance = this;
+
+        DontDestroyOnLoad(gameObject);
     }
 
     public void StartHost() {
@@ -21,13 +23,16 @@ public class KitchenGameMultiplayer : NetworkBehaviour {
 
     private void NetworkManager_ConnectionApprovalCallBack(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest,
                                                            NetworkManager.ConnectionApprovalResponse connectionApprovalResponse) {
-        if (KitchenGameManager.Instance.IsWaitingToStart()) {
-            connectionApprovalResponse.Approved = true;
-            connectionApprovalResponse.CreatePlayerObject = true;
-        }
-        else {
-            connectionApprovalResponse.Approved = false;
-        }
+
+        connectionApprovalResponse.Approved = true;
+        //if (KitchenGameManager.Instance.IsWaitingToStart()) {
+
+        //    connectionApprovalResponse.Approved = true;
+        //    connectionApprovalResponse.CreatePlayerObject = true;
+        //}
+        //else {
+        //    connectionApprovalResponse.Approved = false;
+        //}
              
     }
 
