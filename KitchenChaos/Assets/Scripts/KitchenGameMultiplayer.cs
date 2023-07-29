@@ -3,11 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class KitchenGameMultiplayer : NetworkBehaviour {
 
+    private const int MAX_PLAYER_COUNT = 4;
+
     public static KitchenGameMultiplayer Instance { get; private set; }
 
+    public event EventHandler OnTryingToJoinGame;
+    public event EventHandler OnFailedToJoinGame;
 
     [SerializeField] private KitchenObjectListSO kitchenObjectListSO;
     private void Awake() {
@@ -23,6 +28,17 @@ public class KitchenGameMultiplayer : NetworkBehaviour {
 
     private void NetworkManager_ConnectionApprovalCallBack(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest,
                                                            NetworkManager.ConnectionApprovalResponse connectionApprovalResponse) {
+        if(SceneManager.GetActiveScene().name != Loader.Scene.CharacterSelectScene.ToString()) {
+            connectionApprovalResponse.Approved = false;
+            Debug.Log("The game has already started");
+            return;
+        }
+
+        if(NetworkManager.Singleton.ConnectedClientsIds.Count >= MAX_PLAYER_COUNT) {
+            connectionApprovalResponse.Approved = false;
+            Debug.Log("Game is full!");
+            return;
+        }
 
         connectionApprovalResponse.Approved = true;
         //if (KitchenGameManager.Instance.IsWaitingToStart()) {
@@ -37,9 +53,15 @@ public class KitchenGameMultiplayer : NetworkBehaviour {
     }
 
     public void StartClient() {
+        OnTryingToJoinGame?.Invoke(this, EventArgs.Empty);
+
+        NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnectedCallback;
         NetworkManager.Singleton.StartClient();
     }
 
+    private void NetworkManager_OnClientConnectedCallback(ulong clientId) {
+        OnFailedToJoinGame?.Invoke(this, EventArgs.Empty);
+    }
 
     public void SpawnKitchenObject(KitchenObjectSO kitchenObjectSO, IKitchenObjectParent parent) {
         KitchenObjectServerRpc(GetKitchenObjectSOIndex(kitchenObjectSO), parent.GetNetworkObject());

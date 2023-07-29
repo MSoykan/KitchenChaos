@@ -26,6 +26,8 @@ public class KitchenGameManager : NetworkBehaviour {
         GameOver
     }
 
+    [SerializeField] private Transform playerPrefab;
+
     private NetworkVariable<State> state = new NetworkVariable<State>(State.WaitingToStart);
     private bool localPlayerReady;
     //private float waitingToStartTimer = 1f;
@@ -55,8 +57,17 @@ public class KitchenGameManager : NetworkBehaviour {
         state.OnValueChanged += State_OnValueChanged;
         isGamePaused.OnValueChanged += IsGamePaused_OnValueChanged;
 
-        if(IsServer){
+        if (IsServer) {
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += NetworkManager_SceneManager_OnLoadEventCompleted;
+
+        }
+    }
+
+    private void NetworkManager_SceneManager_OnLoadEventCompleted(string sceneName, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut) {
+        foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds) {
+            Transform playerTransform = Instantiate(playerPrefab);
+            playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
         }
     }
 
@@ -203,7 +214,7 @@ public class KitchenGameManager : NetworkBehaviour {
     [ServerRpc(RequireOwnership = false)]
     private void UnPauseGameServerRpc(ServerRpcParams serverRpcParams = default) {
         playerPausedDictionary[serverRpcParams.Receive.SenderClientId] = false;
-        
+
         TestGamePausedState();
     }
 
